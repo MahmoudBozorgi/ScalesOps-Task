@@ -1,6 +1,9 @@
-import { Container, Card, Col, Row } from "react-bootstrap";
+import { Container, Card, Col, Row, Dropdown } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { sendCardsRequest } from "../redux/modules/Cards";
+import {
+  sendCardsRequest,
+  sendFilteredCardsRequest,
+} from "../redux/modules/Cards";
 import { useEffect } from "react";
 import Loading from "./Loading";
 
@@ -8,12 +11,36 @@ function Products() {
   const { loading, data } = useSelector((state) => state.cardsReducer);
   const dispatch = useDispatch();
 
+  const onFilterChange = (value) => {
+    dispatch(sendFilteredCardsRequest(value));
+  };
+
   useEffect(() => {
     dispatch(sendCardsRequest());
   }, [dispatch]);
 
   return (
     <Container className="py-5">
+      <Dropdown className="mb-3">
+        <Dropdown.Toggle variant="success" id="dropdown-basic">
+          Dropdown Button
+        </Dropdown.Toggle>
+
+        <Dropdown.Menu>
+          <Dropdown.Item onClick={() => onFilterChange("men's clothing")}>
+            Men's clothing
+          </Dropdown.Item>
+          <Dropdown.Item onClick={() => onFilterChange("women's clothing")}>
+            Women's clothing
+          </Dropdown.Item>
+          <Dropdown.Item onClick={() => onFilterChange("electronics")}>
+            Electronics
+          </Dropdown.Item>
+          <Dropdown.Item onClick={() => onFilterChange("jewelery")}>
+            Jewelery
+          </Dropdown.Item>
+        </Dropdown.Menu>
+      </Dropdown>
       {loading ? (
         <Loading />
       ) : (
